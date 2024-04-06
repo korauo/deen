@@ -1,5 +1,6 @@
 require("dotenv").config();
 require("module-alias/register");
+const keep_alive = require("./keep_alive.js");
 
 // register extenders
 require("@helpers/extenders/Message");
