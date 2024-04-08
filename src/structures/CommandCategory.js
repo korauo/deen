@@ -1,22 +1,22 @@
 module.exports = {
   ISLAM: {
     name: "Islam",
-    image: "https://i.imgur.com/QGH5UZa.png",
+    image: "https://i.imgur.com/2kERBxK.png",
     emoji: "☪️",
   },
   INFORMATION: {
     name: "Information",
-    image: "https://i.imgur.com/iuW3RDR.png",
+    image: "https://i.imgur.com/vWBNyL6.png",
     emoji: "📜",
   },
   OWNER: {
     name: "Owner",
-    image: "https://i.imgur.com/PUiyxJ7.png",
+    image: "https://i.imgur.com/TbmMpNc.png",
     emoji: "🤴",
   },
   UTILITY: {
     name: "Utility",
-    image: "https://i.imgur.com/Nw1aPWO.png",
+    image: "https://i.imgur.com/V0fHCl3.png",
     emoji: "🛠️",
   },
 };

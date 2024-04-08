@@ -51,10 +51,10 @@ module.exports = (client) => {
   )}%`;
 
   let desc = "";
-  desc += `❒ Total guilds: ${guilds}\n`;
-  desc += `❒ Total users: ${users}\n`;
-  desc += `❒ Total channels: ${channels}\n`;
-  desc += `❒ Websocket Ping: ${client.ws.ping} ms\n`;
+  desc += `- Total servers: ${guilds}\n`;
+  desc += `- Total users: ${users}\n`;
+  desc += `- Total channels: ${channels}\n`;
+  desc += `- Ping: ${client.ws.ping}ms\n`;
   desc += "\n";
 
   const embed = new EmbedBuilder()
@@ -115,7 +115,7 @@ module.exports = (client) => {
     components.push(
       new ButtonBuilder()
         .setLabel("Support Server")
-        .setURL("https://discord.co")
+        .setURL(SUPPORT_SERVER)
         .setStyle(ButtonStyle.Link),
     );
   }

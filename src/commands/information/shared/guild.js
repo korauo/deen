@@ -92,7 +92,7 @@ module.exports = async (guild) => {
   desc += "\n";
 
   const embed = new EmbedBuilder()
-    .setTitle("GUILD INFORMATION")
+    .setTitle("Server Information")
     .setThumbnail(guild.iconURL())
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setDescription(desc)

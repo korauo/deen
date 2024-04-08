@@ -9,7 +9,7 @@ module.exports = {
   category: "ISLAM",
   command: {
     enabled: true,
-    usage: "<city> <country> <method>",
+    usage: "<city> <methodNumber>",
     aliases: ["prayer"],
   },
   slashCommand: {
@@ -18,12 +18,6 @@ module.exports = {
       {
         name: "city",
         description: "City name to get prayer times for",
-        type: ApplicationCommandOptionType.String,
-        required: true,
-      },
-      {
-        name: "country",
-        description: "Country name or code",
         type: ApplicationCommandOptionType.String,
         required: true,
       },
@@ -37,7 +31,7 @@ module.exports = {
   },
 
   async messageRun(message, args) {
-    if (args.length < 2) {
+    if (args.length < 0) {
 		const invalidFormatEmbed = new EmbedBuilder()
 			.setTitle("Invalid Format")
 			.setDescription("Please specify the city and country.")
@@ -46,21 +40,20 @@ module.exports = {
       return message.safeReply({embeds: [invalidFormatEmbed]});
     }
     const city = args[0];
-    const country = args[1];
-    const method = args[2] || "Please specify a calculation method ID.";
+    const method = args[1] || "Please specify a calculation method ID.";
 
-    if (!args[2]) {
+    if (!args[1]) {
       const methodEmbed = new EmbedBuilder()
         .setTitle(`${method} \nAvailable Calculation Methods are:`)
         .setDescription(
-          "1. University of Islamic Sciences, Karachi\n2. Islamic Society of North America\n3. Muslim World League\n4. Umm Al-Qura University, Makkah\n5. Egyptian General Authority of Survey\n7. Institute of Geophysics, University of Tehran\n8. Gulf Region\n10. Qatar\n11. Majlis Ugama Islam Singapura, Singapore\n12. Union Organization islamic de France\n13. Diyanet İşleri Başkanlığı, Turkey\n14. Spiritual Administration of Muslims of Russia\n15. Moonsighting Committee Worldwide (also requires shafaq parameter)\n16. Dubai (unofficial)",
+          "- 1. University of Islamic Sciences, Karachi\n- 2. Islamic Society of North America\n- 3. Muslim World League\n- 4. Umm Al-Qura University, Makkah\n- 5. Egyptian General Authority of Survey\n- 7. Institute of Geophysics, University of Tehran\n- 8. Gulf Region\n- 10. Qatar\n- 11. Majlis Ugama Islam Singapura, Singapore\n- 12. Union Organization islamic de France\n- 13. Diyanet İşleri Başkanlığı, Turkey\n- 14. Spiritual Administration of Muslims of Russia\n- 15. Moonsighting Committee Worldwide (also requires shafaq parameter)\n- 16. Dubai (unofficial)",
         )
         .setColor(EMBED_COLORS.WARNING);
       return message.reply({ embeds: [methodEmbed] });
     }
 
     try {
-      const response = await fetchPrayerTimes(city, country, method);
+      const response = await fetchPrayerTimes(city, method);
       message.reply(response);
     } catch (error) {
       console.error("Error fetching prayer times:", error);
@@ -79,11 +72,10 @@ module.exports = {
 
   async interactionRun(interaction) {
     const city = interaction.options.getString("city");
-    const country = interaction.options.getString("country");
     const method = interaction.options.getString("method");
 
     try {
-      const response = await fetchPrayerTimes(city, country, method);
+      const response = await fetchPrayerTimes(city, method);
       await interaction.followUp(response);
     } catch (error) {
       console.error("Error fetching prayer times:", error);
@@ -99,11 +91,11 @@ module.exports = {
   },
 };
 
-async function fetchPrayerTimes(city, country, method) {
+async function fetchPrayerTimes(city, method) {
   const response = await fetch(
-    `https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(
+    `https://api.aladhan.com/v1/timingsByAddress?address=${encodeURIComponent(
       city,
-    )}&country=${encodeURIComponent(country)}&method=${encodeURIComponent(
+    )}&method=${encodeURIComponent(
       method,
     )}`,
   );
@@ -112,11 +104,9 @@ async function fetchPrayerTimes(city, country, method) {
   const timings = data.data.timings;
 
   const hanafiResponse = await fetch(
-    `https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(
+    `https://api.aladhan.com/v1/timingsByAddress?address=${encodeURIComponent(
       city,
-    )}&country=${encodeURIComponent(country)}&method=${encodeURIComponent(
-      method,
-    )}&school=1`,
+    )}&method=${encodeURIComponent(method)}&school=1`,
   );
   const hanafiData = await hanafiResponse.json();
   const hanafiTimings = hanafiData.data.timings;
@@ -125,7 +115,7 @@ async function fetchPrayerTimes(city, country, method) {
     .setAuthor({
       name: `Prayer times for: ${
         city.charAt(0).toUpperCase() + city.slice(1)
-      }, ${country.toUpperCase()}`,
+      },`,
       iconURL: "https://i.imgur.com/vuxAZL8.png",
     })
     .setTitle(
