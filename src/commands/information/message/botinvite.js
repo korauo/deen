@@ -6,7 +6,7 @@ const { EMBED_COLORS } = require("@root/config");
  * @type {import("@structures/Command")}
  */
 module.exports = {
-  name: "botinvite",
+  name: "invite",
   description: "gives you bot invite",
   category: "INFORMATION",
   botPermissions: ["EmbedLinks"],
