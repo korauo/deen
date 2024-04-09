@@ -107,7 +107,6 @@ module.exports = {
       response = avatar(target);
     }
 
-
     // return
     else {
       response = "Incorrect subcommand";

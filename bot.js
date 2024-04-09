@@ -1,6 +1,6 @@
 require("dotenv").config();
 require("module-alias/register");
-const keep_alive = require("./keep_alive.js");
+const keep_alive = require("./keep_alive.js"); // keep the bot online 24/7
 
 // register extenders
 require("@helpers/extenders/Message");
@@ -19,13 +19,16 @@ client.loadCommands("src/commands");
 client.loadContexts("src/contexts");
 client.loadEvents("src/events");
 
+const { AutoPoster } = require("topgg-autoposter");
+
+const poster = AutoPoster(process.env.TOPGG_TOKEN, client);
+
 // find unhandled promise rejections
 process.on("unhandledRejection", (err) =>
   client.logger.error("Unhandled exception", err),
 );
 
 (async () => {
-
   await initializeMongoose();
 
   // start the client

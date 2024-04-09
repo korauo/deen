@@ -79,7 +79,8 @@ const migrateGuilds = async (collections) => {
 
     if (toUpdate.length > 0) {
       for (const doc of toUpdate) {
-        if (typeof doc.data.owner === "object") doc.data.owner = doc.data.owner.id;
+        if (typeof doc.data.owner === "object")
+          doc.data.owner = doc.data.owner.id;
         if (typeof doc.automod === "object") {
           if (doc.automod.strikes === 5) doc.automod.strikes = 10;
           if (doc.automod.action === "MUTE") doc.automod.action = "TIMEOUT";
@@ -97,8 +98,8 @@ const migrateGuilds = async (collections) => {
         process.stdout.cursorTo(0);
         process.stdout.write(
           `📦 Migrating 'guilds' collection | Completed - ${Math.round(
-            (toUpdate.indexOf(doc) / toUpdate.length) * 100
-          )}%`
+            (toUpdate.indexOf(doc) / toUpdate.length) * 100,
+          )}%`,
         );
       }
 
@@ -111,10 +112,12 @@ const migrateGuilds = async (collections) => {
             "automod.max_role_mentions": "",
             ranking: "",
           },
-        }
+        },
       );
 
-      clearAndLog(`📦 Migrating 'guilds' collection | ✅ Updated: ${toUpdate.length}`);
+      clearAndLog(
+        `📦 Migrating 'guilds' collection | ✅ Updated: ${toUpdate.length}`,
+      );
     } else {
       clearAndLog("📦 Migrating 'guilds' collection | ✅ No updates required");
     }
@@ -134,8 +137,17 @@ const migrateModLogs = async (collections) => {
     const modLogs = collections.find((c) => c.collectionName === "mod-logs");
     const stats = await modLogs.updateMany({}, { $unset: { expires: "" } });
     await modLogs.updateMany({ type: "MUTE" }, { $set: { type: "TIMEOUT" } });
-    await modLogs.updateMany({ type: "UNMUTE" }, { $set: { type: "UNTIMEOUT" } });
-    console.log(`| ✅ ${stats.modifiedCount > 0 ? `Updated: ${stats.modifiedCount}` : "No updates required"}`);
+    await modLogs.updateMany(
+      { type: "UNMUTE" },
+      { $set: { type: "UNTIMEOUT" } },
+    );
+    console.log(
+      `| ✅ ${
+        stats.modifiedCount > 0
+          ? `Updated: ${stats.modifiedCount}`
+          : "No updates required"
+      }`,
+    );
   } catch (ex) {
     clearAndLog("📦 Migrating 'mod-logs' collection | ❌ Error occurred");
     console.log(ex);
@@ -158,10 +170,17 @@ const migrateTranslateLogs = async (collections) => {
 const migrateSuggestions = async (collections) => {
   process.stdout.write("📦 Migrating 'suggestions' collection ");
   try {
-    const suggestionsC = collections.find((c) => c.collectionName === "suggestions");
+    const suggestionsC = collections.find(
+      (c) => c.collectionName === "suggestions",
+    );
 
     const toUpdate = await suggestionsC
-      .find({ $or: [{ channel_id: { $exists: false } }, { createdAt: { $exists: true } }] })
+      .find({
+        $or: [
+          { channel_id: { $exists: false } },
+          { createdAt: { $exists: true } },
+        ],
+      })
       .toArray();
 
     if (toUpdate.length > 0) {
@@ -180,20 +199,24 @@ const migrateSuggestions = async (collections) => {
           {
             $set: { channel_id: guildDb.suggestions.channel_id },
             $rename: { createdAt: "created_at", updatedAt: "updated_at" },
-          }
+          },
         );
         process.stdout.clearLine();
         process.stdout.cursorTo(0);
         process.stdout.write(
           `📦 Migrating 'suggestions' collection | Completed - ${Math.round(
-            (toUpdate.indexOf(doc) / toUpdate.length) * 100
-          )}%`
+            (toUpdate.indexOf(doc) / toUpdate.length) * 100,
+          )}%`,
         );
       }
 
-      clearAndLog(`📦 Migrating 'suggestions' collection | ✅ Updated: ${toUpdate.length}`);
+      clearAndLog(
+        `📦 Migrating 'suggestions' collection | ✅ Updated: ${toUpdate.length}`,
+      );
     } else {
-      clearAndLog("📦 Migrating 'suggestions' collection | ✅ No updates required");
+      clearAndLog(
+        "📦 Migrating 'suggestions' collection | ✅ No updates required",
+      );
     }
   } catch (ex) {
     clearAndLog("📦 Migrating 'suggestions' collection | ❌ Error occurred");
@@ -210,10 +233,13 @@ const migrateMemberStats = async (collections) => {
   try {
     const membersC = collections.find((c) => c.collectionName === "members");
     if (!collections.find((c) => c.collectionName === "member-stats")) {
-      const memberStatsC = await mongoose.connection.db.createCollection("member-stats");
+      const memberStatsC =
+        await mongoose.connection.db.createCollection("member-stats");
 
       const toUpdate = await membersC
-        .find({ $or: [{ xp: { $exists: true } }, { level: { $exists: true } }] })
+        .find({
+          $or: [{ xp: { $exists: true } }, { level: { $exists: true } }],
+        })
         .toArray();
       if (toUpdate.length > 0) {
         for (const doc of toUpdate) {
@@ -227,17 +253,23 @@ const migrateMemberStats = async (collections) => {
           process.stdout.cursorTo(0);
           process.stdout.write(
             `📦 Migrating 'member-stats' collection | Completed - ${Math.round(
-              (toUpdate.indexOf(doc) / toUpdate.length) * 100
-            )}%`
+              (toUpdate.indexOf(doc) / toUpdate.length) * 100,
+            )}%`,
           );
         }
 
-        clearAndLog(`📦 Migrating 'member-stats' collection | ✅ Updated: ${toUpdate.length}`);
+        clearAndLog(
+          `📦 Migrating 'member-stats' collection | ✅ Updated: ${toUpdate.length}`,
+        );
       } else {
-        clearAndLog("📦 Migrating 'member-stats' collection | ✅ No updates required");
+        clearAndLog(
+          "📦 Migrating 'member-stats' collection | ✅ No updates required",
+        );
       }
     } else {
-      clearAndLog("📦 Migrating 'member-stats' collection | ✅ No updates required");
+      clearAndLog(
+        "📦 Migrating 'member-stats' collection | ✅ No updates required",
+      );
     }
   } catch (ex) {
     clearAndLog("📦 Migrating 'member-stats' collection | ❌ Error occurred");
@@ -253,10 +285,17 @@ const migrateMembers = async (collections) => {
   process.stdout.write("📦 Migrating 'members' collection ");
   try {
     const membersC = collections.find((c) => c.collectionName === "members");
-    const toUpdate = await membersC.find({ $or: [{ xp: { $exists: true } }, { level: { $exists: true } }] }).toArray();
+    const toUpdate = await membersC
+      .find({ $or: [{ xp: { $exists: true } }, { level: { $exists: true } }] })
+      .toArray();
     if (toUpdate.length > 0) {
-      const stats = await membersC.updateMany({}, { $unset: { xp: "", level: "", mute: "" } });
-      clearAndLog(`📦 Migrating 'members' collection | ✅ Updated: ${stats.modifiedCount}`);
+      const stats = await membersC.updateMany(
+        {},
+        { $unset: { xp: "", level: "", mute: "" } },
+      );
+      clearAndLog(
+        `📦 Migrating 'members' collection | ✅ Updated: ${stats.modifiedCount}`,
+      );
     } else {
       clearAndLog("📦 Migrating 'members' collection | ✅ No updates required");
     }
@@ -276,7 +315,12 @@ const migrateUsers = async (collections) => {
     const usersC = collections.find((c) => c.collectionName === "users");
 
     const toUpdate = await usersC
-      .find({ $or: [{ username: { $exists: false } }, { discriminator: { $exists: false } }] })
+      .find({
+        $or: [
+          { username: { $exists: false } },
+          { discriminator: { $exists: false } },
+        ],
+      })
       .toArray();
 
     if (toUpdate.length > 0) {
@@ -292,7 +336,12 @@ const migrateUsers = async (collections) => {
           const user = await client.users.fetch(doc._id);
           await usersC.updateOne(
             { _id: doc._id },
-            { $set: { username: user.username, discriminator: user.discriminator } }
+            {
+              $set: {
+                username: user.username,
+                discriminator: user.discriminator,
+              },
+            },
           );
           success++;
         } catch (e) {
@@ -303,12 +352,14 @@ const migrateUsers = async (collections) => {
         process.stdout.cursorTo(0);
         process.stdout.write(
           `📦 Migrating 'users' collection | Completed - ${Math.round(
-            (toUpdate.indexOf(doc) / toUpdate.length) * 100
-          )}%`
+            (toUpdate.indexOf(doc) / toUpdate.length) * 100,
+          )}%`,
         );
       }
 
-      clearAndLog(`📦 Migrating 'users' collection | ✅ Updated: ${success} | ❌ Failed: ${failed}`);
+      clearAndLog(
+        `📦 Migrating 'users' collection | ✅ Updated: ${success} | ❌ Failed: ${failed}`,
+      );
     } else {
       clearAndLog("📦 Migrating 'users' collection | ✅ No updates required");
     }
@@ -330,12 +381,20 @@ const migrateMessages = async (collections) => {
       !collections.find((c) => c.collectionName === "reaction-roles") &&
       collections.find((c) => c.collectionName === "messages")
     ) {
-      const rrolesC = await mongoose.connection.db.createCollection("reaction-roles");
-      const ticketsC = await mongoose.connection.db.createCollection("v4-ticket-backup");
-      const messagesC = collections.find((c) => c.collectionName === "messages");
+      const rrolesC =
+        await mongoose.connection.db.createCollection("reaction-roles");
+      const ticketsC =
+        await mongoose.connection.db.createCollection("v4-ticket-backup");
+      const messagesC = collections.find(
+        (c) => c.collectionName === "messages",
+      );
 
-      const rrToUpdate = await messagesC.find({ roles: { $exists: true, $ne: [] } }).toArray();
-      const tToUpdate = await messagesC.find({ ticket: { $exists: true } }).toArray();
+      const rrToUpdate = await messagesC
+        .find({ roles: { $exists: true, $ne: [] } })
+        .toArray();
+      const tToUpdate = await messagesC
+        .find({ ticket: { $exists: true } })
+        .toArray();
 
       if (rrToUpdate.length > 0 || tToUpdate.length > 0) {
         await rrolesC.insertMany(
@@ -344,7 +403,7 @@ const migrateMessages = async (collections) => {
             channel_id: doc.channel_id,
             message_id: doc.message_id,
             roles: doc.roles,
-          }))
+          })),
         );
 
         await ticketsC.insertMany(
@@ -353,20 +412,26 @@ const migrateMessages = async (collections) => {
             channel_id: doc.channel_id,
             message_id: doc.message_id,
             ticket: doc.ticket,
-          }))
+          })),
         );
 
         await mongoose.connection.db.dropCollection("messages");
 
         clearAndLog(
-          `📦 Migrating 'messages' collection | Completed - Updated: ${rrToUpdate.length + tToUpdate.length}`
+          `📦 Migrating 'messages' collection | Completed - Updated: ${
+            rrToUpdate.length + tToUpdate.length
+          }`,
         );
       } else {
         await mongoose.connection.db.dropCollection("messages");
-        clearAndLog("📦 Migrating 'messages' collection | ✅ No updates required");
+        clearAndLog(
+          "📦 Migrating 'messages' collection | ✅ No updates required",
+        );
       }
     } else {
-      clearAndLog("📦 Migrating 'messages' collection | ✅ No updates required");
+      clearAndLog(
+        "📦 Migrating 'messages' collection | ✅ No updates required",
+      );
     }
   } catch (ex) {
     clearAndLog("📦 Migrating 'messages' collection | ❌ Error occurred");

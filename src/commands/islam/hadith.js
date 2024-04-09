@@ -7,7 +7,7 @@ const {
 } = require("discord.js");
 const fetch = require("node-fetch");
 const { EMBED_COLORS } = require("@root/config");
-require("dotenv").config(); // Make sure your .env file has the HADITH_API variable
+require("dotenv").config();
 /**
  * @type {import("@structures/Command")}
  */
@@ -83,13 +83,13 @@ async function fetchHadith(book, hadithNumber) {
     throw new Error("Failed to fetch the hadith or hadith not found.");
   }
 
-  return data.hadiths.data[0]; // Assume the first entry is the one we want
+  return data.hadiths.data[0];
 }
 // MESSAGE COMMAND
 async function paginateHadithMessage(context, hadith) {
   const embeds = generateEmbedsMessage(hadith.hadithEnglish);
 
-  // If it doesn't need pagination
+  // no pagination
   if (embeds.length <= 1) {
     return context.reply({
       embeds: [
@@ -154,14 +154,13 @@ async function paginateHadithMessage(context, hadith) {
 }
 
 function generateEmbedsMessage(text) {
-  const maxLength = 1500; // Discord's max embed description length
+  const maxLength = 1500;
   const embeds = [];
   let startIndex = 0;
 
   while (startIndex < text.length) {
     let endIndex = Math.min(text.length, startIndex + maxLength);
     if (endIndex < text.length) {
-      // If not the end of text, find last whitespace to cut
       const lastSpaceIndex = text.lastIndexOf(" ", endIndex);
       endIndex = lastSpaceIndex > startIndex ? lastSpaceIndex : endIndex;
     }
@@ -184,7 +183,7 @@ function generateEmbedsMessage(text) {
 async function paginateHadithSlash(context, hadith) {
   const embeds = generateEmbedsSlash(hadith.hadithEnglish);
 
-  // If it doesn't need pagination
+  // no
   if (embeds.length <= 1) {
     return context.followUp({
       embeds: [
@@ -244,14 +243,13 @@ async function paginateHadithSlash(context, hadith) {
 }
 
 function generateEmbedsSlash(text) {
-  const maxLength = 1500; // Discord's max embed description length
+  const maxLength = 1500;
   const embeds = [];
   let startIndex = 0;
 
   while (startIndex < text.length) {
     let endIndex = Math.min(text.length, startIndex + maxLength);
     if (endIndex < text.length) {
-      // If not the end of text, find last whitespace to cut
       const lastSpaceIndex = text.lastIndexOf(" ", endIndex);
       endIndex = lastSpaceIndex > startIndex ? lastSpaceIndex : endIndex;
     }

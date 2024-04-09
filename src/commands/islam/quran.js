@@ -40,7 +40,7 @@ module.exports = {
         "Please specify the Surah and Ayah (or Ayah range) correctly, e.g., `1:3` or `1:3-5`.",
       );
     }
-    // Splitting the first argument into surahNumber and reference (ayah or ayah range)
+    // split
     const [surahNumber, reference] = args[0].split(":");
 
     try {
@@ -89,7 +89,7 @@ async function fetchSurahMeanings(surahNumber, reference) {
     );
     ayahsText = ayahs
       .map((ayah) => `${ayah.numberInSurah}. ${ayah.text}`)
-      .join("\n\n");
+      .join("\n");
   } else {
     ayahsText = data.data.text;
   }

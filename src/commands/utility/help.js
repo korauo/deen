@@ -223,7 +223,6 @@ const waiter = (msg, userId, prefix) => {
  * @param {string} category
  */
 function getSlashCategoryEmbeds(client, category) {
-
   // For REMAINING Categories
   const commands = Array.from(
     client.slashCommands.filter((cmd) => cmd.category === category).values(),

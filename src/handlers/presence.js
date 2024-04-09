@@ -11,7 +11,10 @@ function updatePresence(client) {
   }
 
   if (message.includes("{prefix}")) {
-    message = message.replaceAll("{prefix}", client.config.PREFIX_COMMANDS.DEFAULT_PREFIX);
+    message = message.replaceAll(
+      "{prefix}",
+      client.config.PREFIX_COMMANDS.DEFAULT_PREFIX,
+    );
   }
 
   if (message.includes("{members}")) {

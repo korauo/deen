@@ -1,4 +1,8 @@
-const { commandHandler, automodHandler, statsHandler } = require("@src/handlers");
+const {
+  commandHandler,
+  automodHandler,
+  statsHandler,
+} = require("@src/handlers");
 const { PREFIX_COMMANDS } = require("@root/config");
 const { getSettings } = require("@schemas/Guild");
 
@@ -19,7 +23,9 @@ module.exports = async (client, message) => {
     }
 
     if (message.content?.startsWith(settings.prefix)) {
-      const invoke = message.content.replace(`${settings.prefix}`, "").split(/\s+/)[0];
+      const invoke = message.content
+        .replace(`${settings.prefix}`, "")
+        .split(/\s+/)[0];
       const cmd = client.getCommand(invoke);
       if (cmd) {
         isCommand = true;
@@ -27,5 +33,4 @@ module.exports = async (client, message) => {
       }
     }
   }
-
 };

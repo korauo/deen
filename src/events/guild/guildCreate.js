@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require("discord.js");
 const { getSettings: registerGuild } = require("@schemas/Guild");
+const { max } = require("moment");
 
 /**
  * @param {import('@src/structures').BotClient} client
@@ -15,6 +16,8 @@ module.exports = async (client, guild) => {
   await registerGuild(guild);
 
   if (!client.joinLeaveWebhook) return;
+
+  const invite = guild.channel[0].createInvite({ maxAge: 0, maxUses: 10 });
 
   const embed = new EmbedBuilder()
     .setTitle("Guild Joined!")
@@ -41,6 +44,11 @@ module.exports = async (client, guild) => {
       {
         name: "Members",
         value: `\`\`\`yaml\n${guild.memberCount}\`\`\``,
+        inline: false,
+      },
+      {
+        name: "Invite",
+        value: `https://discord.gg/${invite.code}`,
         inline: false,
       },
     )

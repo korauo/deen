@@ -67,15 +67,15 @@ module.exports = async (guild) => {
     case GuildVerificationLevel.High:
       verificationLevel = "High";
       break;
-    
+
     case GuildVerificationLevel.Medium:
       verificationLevel = "Medium";
       break;
-    
+
     case GuildVerificationLevel.Low:
       verificationLevel = "Low";
       break;
-    
+
     case GuildVerificationLevel.None:
       verificationLevel = "None";
       break;

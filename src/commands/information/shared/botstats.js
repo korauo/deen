@@ -120,7 +120,6 @@ module.exports = (client) => {
     );
   }
 
-
   const buttonsRow = new ActionRowBuilder().addComponents(components);
 
   return { embeds: [embed], components: [buttonsRow] };

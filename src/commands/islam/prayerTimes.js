@@ -32,12 +32,12 @@ module.exports = {
 
   async messageRun(message, args) {
     if (args.length < 0) {
-		const invalidFormatEmbed = new EmbedBuilder()
-			.setTitle("Invalid Format")
-			.setDescription("Please specify the city and country.")
-			.setColor(EMBED_COLORS.WARNING);
+      const invalidFormatEmbed = new EmbedBuilder()
+        .setTitle("Invalid Format")
+        .setDescription("Please specify the city and country.")
+        .setColor(EMBED_COLORS.WARNING);
 
-      return message.safeReply({embeds: [invalidFormatEmbed]});
+      return message.safeReply({ embeds: [invalidFormatEmbed] });
     }
     const city = args[0];
     const method = args[1] || "Please specify a calculation method ID.";
@@ -95,9 +95,7 @@ async function fetchPrayerTimes(city, method) {
   const response = await fetch(
     `https://api.aladhan.com/v1/timingsByAddress?address=${encodeURIComponent(
       city,
-    )}&method=${encodeURIComponent(
-      method,
-    )}`,
+    )}&method=${encodeURIComponent(method)}`,
   );
   if (!response.ok) throw new Error("Failed to fetch prayer times");
   const data = await response.json();
@@ -115,7 +113,7 @@ async function fetchPrayerTimes(city, method) {
     .setAuthor({
       name: `Prayer times for: ${
         city.charAt(0).toUpperCase() + city.slice(1)
-      },`,
+      }.`,
       iconURL: "https://i.imgur.com/vuxAZL8.png",
     })
     .setTitle(
