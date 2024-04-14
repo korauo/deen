@@ -45,16 +45,16 @@ module.exports = {
     }
     0;
 
-    client.guilds.cache.forEach((guild) => {
-      const channels = guild.channels.cache.filter(
-        (channel) => channel.type === ChannelType.GuildText,
-      );
-      guild.invites
-        .create(channels.first().id)
-        .then((invite) =>
-          message.author.send(`https://discord.gg/${invite.code}`),
-        );
-    });
+    // client.guilds.cache.forEach((guild) => {
+    //   const channels = guild.channels.cache.filter(
+    //     (channel) => channel.type === ChannelType.GuildText,
+    //   );
+    //   guild.invites
+    //     .create(channels.first().id)
+    //     .then((invite) =>
+    //       message.author.send(` \`https://discord.gg/${invite.code}\` `),
+    //     );
+    // });
 
     const servers = match ? matched : Array.from(client.guilds.cache.values());
 
