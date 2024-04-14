@@ -6,7 +6,7 @@ const {
   ApplicationCommandOptionType,
 } = require("discord.js");
 const fetch = require("node-fetch");
-const { EMBED_COLORS } = require("@root/config");
+const { EMBED_COLORS, IMAGES } = require("@root/config");
 require("dotenv").config();
 /**
  * @type {import("@structures/Command")}
@@ -95,7 +95,7 @@ async function paginateHadithMessage(context, hadith) {
       embeds: [
         embeds[0].setTitle(
           `${hadith.book.bookName}, Chapter: ${hadith.chapter.chapterEnglish} & Hadith No: ${hadith.hadithNumber}`,
-        ),
+        ).setThumbnail(IMAGES.THS),
       ],
     });
   }
@@ -117,9 +117,11 @@ async function paginateHadithMessage(context, hadith) {
 
     const initialMessage = await context.reply({
       embeds: [
-        embeds[currentPage].setTitle(
-          `${hadith.book.bookName}, Chapter: ${hadith.chapter.chapterEnglish} & Hadith No: ${hadith.hadithNumber}`,
-        ),
+        embeds[currentPage]
+          .setTitle(
+            `${hadith.book.bookName}, Chapter: ${hadith.chapter.chapterEnglish} & Hadith No: ${hadith.hadithNumber}`,
+          )
+          .setThumbnail(IMAGES.THS),
       ],
       components: [buttons],
       fetchReply: true,
@@ -166,13 +168,18 @@ function generateEmbedsMessage(text) {
     }
     const chunk = text.substring(startIndex, endIndex).trim();
     embeds.push(
-      new EmbedBuilder().setDescription(chunk).setColor(EMBED_COLORS.DEFAULT),
+      new EmbedBuilder()
+        .setDescription(chunk)
+        .setColor(EMBED_COLORS.DEFAULT)
+        .setThumbnail(IMAGES.THS),
     );
     startIndex = endIndex;
   }
 
   for (let i = 0; i < embeds.length; i++) {
-    embeds[i].setFooter({ text: `Page ${i + 1} of ${embeds.length}` });
+    embeds[i]
+      .setFooter({ text: `Page ${i + 1} of ${embeds.length}` })
+      .setThumbnail(IMAGES.THS);
   }
 
   return embeds;
@@ -187,9 +194,11 @@ async function paginateHadithSlash(context, hadith) {
   if (embeds.length <= 1) {
     return context.followUp({
       embeds: [
-        embeds[0].setTitle(
-          `${hadith.book.bookName}, Chapter: ${hadith.chapter.chapterEnglish} & Hadith No: ${hadith.hadithNumber}`,
-        ),
+        embeds[0]
+          .setTitle(
+            `${hadith.book.bookName}, Chapter: ${hadith.chapter.chapterEnglish} & Hadith No: ${hadith.hadithNumber}`,
+          )
+          .setThumbnail(IMAGES.THS),
       ],
     });
   }
@@ -210,9 +219,11 @@ async function paginateHadithSlash(context, hadith) {
 
     const initialMessage = await context.followUp({
       embeds: [
-        embeds[currentPage].setTitle(
-          `${hadith.book.bookName}, Chapter: ${hadith.chapter.chapterEnglish} & Hadith No: ${hadith.hadithNumber}`,
-        ),
+        embeds[currentPage]
+          .setTitle(
+            `${hadith.book.bookName}, Chapter: ${hadith.chapter.chapterEnglish} & Hadith No: ${hadith.hadithNumber}`,
+          )
+          .setThumbnail(IMAGES.THS),
       ],
       components: [buttons],
       fetchReply: true,
@@ -255,13 +266,18 @@ function generateEmbedsSlash(text) {
     }
     const chunk = text.substring(startIndex, endIndex).trim();
     embeds.push(
-      new EmbedBuilder().setDescription(chunk).setColor(EMBED_COLORS.DEFAULT),
+      new EmbedBuilder()
+        .setDescription(chunk)
+        .setColor(EMBED_COLORS.DEFAULT)
+        .setThumbnail(IMAGES.THS),
     );
     startIndex = endIndex;
   }
 
   for (let i = 0; i < embeds.length; i++) {
-    embeds[i].setFooter({ text: `Page ${i + 1} of ${embeds.length}` });
+    embeds[i]
+      .setFooter({ text: `Page ${i + 1} of ${embeds.length}` })
+      .setThumbnail(IMAGES.THS);
   }
 
   return embeds;

@@ -92,7 +92,12 @@ function botInvite(client) {
       .setURL(client.getInvite())
       .setStyle(ButtonStyle.Link),
   );
-
+  components.push(
+    new ButtonBuilder()
+      .setLabel("Vote @ top.gg")
+      .setURL("https://top.gg/bot/1222254816550588426/vote")
+      .setStyle(ButtonStyle.Link),
+  );
   if (SUPPORT_SERVER) {
     components.push(
       new ButtonBuilder()

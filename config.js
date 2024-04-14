@@ -34,4 +34,10 @@ module.exports = {
     TYPE: "LISTENING", // Status type for the bot [PLAYING | LISTENING | WATCHING | COMPETING]
     MESSAGE: "the Holy Quran / {prefix}help", // Your bot status message
   },
+  IMAGES: {
+    LOGO: "https://i.imgur.com/4BZ9z8Z.png",
+    WHITE: "https://i.imgur.com/xwmrctE.png",
+    THS: "https://i.imgur.com/98W9ixh.png",
+    TQS: "https://i.imgur.com/wESQzdp.png",
+  },
 };

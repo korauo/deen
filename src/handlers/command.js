@@ -120,7 +120,7 @@ module.exports = {
     // Owner commands
     if (cmd.category === "OWNER" && !OWNER_IDS.includes(interaction.user.id)) {
       return interaction.reply({
-        content: `This command is only accessible to bot owners`,
+        content: "This command is only accessible to bot owners",
         ephemeral: true,
       });
     }
@@ -249,7 +249,7 @@ module.exports = {
  * @param {object} cmd
  */
 function applyCooldown(memberId, cmd) {
-  const key = cmd.name + "|" + memberId;
+  const key = `${cmd.name} | ${memberId}`;
   cooldownCache.set(key, Date.now());
 }
 
@@ -258,7 +258,7 @@ function applyCooldown(memberId, cmd) {
  * @param {object} cmd
  */
 function getRemainingCooldown(memberId, cmd) {
-  const key = cmd.name + "|" + memberId;
+  const key = `${cmd.name} | ${memberId}`;
   if (cooldownCache.has(key)) {
     const remaining = (Date.now() - cooldownCache.get(key)) * 0.001;
     if (remaining > cmd.cooldown) {

@@ -1,4 +1,5 @@
 const { EmbedBuilder, ApplicationCommandOptionType } = require("discord.js");
+const { EMBED_COLORS, IMAGES } = require("@root/config");
 const fetch = require("node-fetch");
 
 module.exports = {
@@ -114,6 +115,7 @@ async function fetchSurahMeanings(surahNumber, reference) {
     .setTitle(titleText)
     .setDescription(ayahsText)
     .setColor("#1A5A3B")
+    .setThumbnail(IMAGES.TQS)
     .setFooter({ text: `Translation by: ${translationName}` });
 
   return { embeds: [embed] };

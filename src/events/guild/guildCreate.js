@@ -17,20 +17,18 @@ module.exports = async (client, guild) => {
 
   if (!client.joinLeaveWebhook) return;
 
-  const invite = guild.channel[0].createInvite({ maxAge: 0, maxUses: 10 });
-
   const embed = new EmbedBuilder()
-    .setTitle("Guild Joined!")
+    .setTitle("Server Joined!")
     .setThumbnail(guild.iconURL())
     .setColor(client.config.EMBED_COLORS.SUCCESS)
     .addFields(
       {
-        name: "Guild Name",
+        name: "Server Name",
         value: guild.name,
         inline: false,
       },
       {
-        name: "ID",
+        name: "Server ID",
         value: guild.id,
         inline: false,
       },
@@ -44,11 +42,6 @@ module.exports = async (client, guild) => {
       {
         name: "Members",
         value: `\`\`\`yaml\n${guild.memberCount}\`\`\``,
-        inline: false,
-      },
-      {
-        name: "Invite",
-        value: `https://discord.gg/${invite.code}`,
         inline: false,
       },
     )
