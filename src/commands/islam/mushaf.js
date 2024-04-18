@@ -13,7 +13,7 @@ module.exports = {
   command: {
     enabled: true,
     usage: "<surah>:<ayah> [tajweed]",
-    aliases: ["mushaf"],
+    aliases: ["page"],
   },
   slashCommand: {
     enabled: true,

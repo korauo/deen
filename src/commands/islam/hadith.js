@@ -13,8 +13,7 @@ require("dotenv").config();
  */
 module.exports = {
   name: "hadith",
-  description:
-    "Fetches a specific hadith based on book, chapter, and hadith number.",
+  description: "Fetches a specific hadith based on book, and hadith number.",
   category: "ISLAM",
   command: {
     enabled: true,
@@ -91,13 +90,13 @@ async function paginateHadithMessage(context, hadith) {
 
   // no pagination
   if (embeds.length <= 1) {
-    return context.reply({
+    return {
       embeds: [
         embeds[0].setTitle(
           `${hadith.book.bookName}, Chapter: ${hadith.chapter.chapterEnglish} & Hadith No: ${hadith.hadithNumber}`,
-        ).setThumbnail(IMAGES.THS),
+        ),
       ],
-    });
+    };
   }
 
   try {
@@ -117,11 +116,9 @@ async function paginateHadithMessage(context, hadith) {
 
     const initialMessage = await context.reply({
       embeds: [
-        embeds[currentPage]
-          .setTitle(
-            `${hadith.book.bookName}, Chapter: ${hadith.chapter.chapterEnglish} & Hadith No: ${hadith.hadithNumber}`,
-          )
-          .setThumbnail(IMAGES.THS),
+        embeds[currentPage].setTitle(
+          `${hadith.book.bookName}, Chapter: ${hadith.chapter.chapterEnglish} & Hadith No: ${hadith.hadithNumber}`,
+        ),
       ],
       components: [buttons],
       fetchReply: true,
@@ -168,10 +165,7 @@ function generateEmbedsMessage(text) {
     }
     const chunk = text.substring(startIndex, endIndex).trim();
     embeds.push(
-      new EmbedBuilder()
-        .setDescription(chunk)
-        .setColor(EMBED_COLORS.DEFAULT)
-        .setThumbnail(IMAGES.THS),
+      new EmbedBuilder().setDescription(chunk).setColor(EMBED_COLORS.DEFAULT),
     );
     startIndex = endIndex;
   }
@@ -194,11 +188,9 @@ async function paginateHadithSlash(context, hadith) {
   if (embeds.length <= 1) {
     return context.followUp({
       embeds: [
-        embeds[0]
-          .setTitle(
-            `${hadith.book.bookName}, Chapter: ${hadith.chapter.chapterEnglish} & Hadith No: ${hadith.hadithNumber}`,
-          )
-          .setThumbnail(IMAGES.THS),
+        embeds[0].setTitle(
+          `${hadith.book.bookName}, Chapter: ${hadith.chapter.chapterEnglish} & Hadith No: ${hadith.hadithNumber}`,
+        ),
       ],
     });
   }
@@ -219,11 +211,9 @@ async function paginateHadithSlash(context, hadith) {
 
     const initialMessage = await context.followUp({
       embeds: [
-        embeds[currentPage]
-          .setTitle(
-            `${hadith.book.bookName}, Chapter: ${hadith.chapter.chapterEnglish} & Hadith No: ${hadith.hadithNumber}`,
-          )
-          .setThumbnail(IMAGES.THS),
+        embeds[currentPage].setTitle(
+          `${hadith.book.bookName}, Chapter: ${hadith.chapter.chapterEnglish} & Hadith No: ${hadith.hadithNumber}`,
+        ),
       ],
       components: [buttons],
       fetchReply: true,
@@ -265,19 +255,15 @@ function generateEmbedsSlash(text) {
       endIndex = lastSpaceIndex > startIndex ? lastSpaceIndex : endIndex;
     }
     const chunk = text.substring(startIndex, endIndex).trim();
-    embeds.push(
-      new EmbedBuilder()
-        .setDescription(chunk)
-        .setColor(EMBED_COLORS.DEFAULT)
-        .setThumbnail(IMAGES.THS),
-    );
+    embeds.push(new EmbedBuilder().setDescription(chunk));
     startIndex = endIndex;
   }
 
   for (let i = 0; i < embeds.length; i++) {
     embeds[i]
       .setFooter({ text: `Page ${i + 1} of ${embeds.length}` })
-      .setThumbnail(IMAGES.THS);
+      .setThumbnail(IMAGES.THS)
+      .setColor(EMBED_COLORS.DEFAULT);
   }
 
   return embeds;

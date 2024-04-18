@@ -3,13 +3,14 @@ const { EMBED_COLORS, IMAGES } = require("@root/config");
 const fetch = require("node-fetch");
 
 module.exports = {
-  name: "quran",
-  description: "Get meanings of specific Ayahs or an Ayah range from a Surah.",
+  name: "aquran",
+  description:
+    "Get the arabic text of specific Ayahs or an Ayah range from a Surah.",
   category: "ISLAM",
   command: {
     enabled: true,
     usage: "<Surah> <Ayah> or <Ayah Range>",
-    aliases: ["ayah", "ayahs", "surah"],
+    aliases: ["asurah"],
   },
   slashCommand: {
     enabled: true,
@@ -75,8 +76,8 @@ module.exports = {
 async function fetchSurahMeanings(surahNumber, reference) {
   // API URL construction
   const apiUrl = reference.includes("-")
-    ? `http://api.alquran.cloud/v1/surah/${surahNumber}/en.asad`
-    : `http://api.alquran.cloud/v1/ayah/${surahNumber}:${reference}/en.asad`;
+    ? `http://api.alquran.cloud/v1/surah/${surahNumber}`
+    : `http://api.alquran.cloud/v1/ayah/${surahNumber}:${reference}`;
 
   const response = await fetch(apiUrl);
   if (!response.ok) throw new Error("API request failed");
@@ -116,7 +117,7 @@ async function fetchSurahMeanings(surahNumber, reference) {
     .setDescription(ayahsText)
     .setColor("#1A5A3B")
     .setThumbnail(IMAGES.TQS)
-    .setFooter({ text: `Translation by: ${translationName}` });
+    .setFooter({ text: `Format: ${translationName}` });
 
   return { embeds: [embed] };
 }
