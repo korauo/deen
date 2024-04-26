@@ -1,6 +1,4 @@
-const {
-  commandHandler,
-} = require("@src/handlers");
+const { commandHandler } = require("@src/handlers");
 const { PREFIX_COMMANDS } = require("@root/config");
 const { getSettings } = require("@schemas/Guild");
 const { EmbedBuilder } = require("discord.js");

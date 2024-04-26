@@ -1,11 +1,11 @@
 const { EmbedBuilder } = require("discord.js");
 const { getSettings: registerGuild } = require("@schemas/Guild");
-const { max } = require("moment");
 
 /**
  * @param {import('@src/structures').BotClient} client
  * @param {import('discord.js').Guild} guild
  */
+
 module.exports = async (client, guild) => {
   if (!guild.available) return;
   if (!guild.members.cache.has(guild.ownerId))
@@ -17,7 +17,7 @@ module.exports = async (client, guild) => {
 
   if (!client.joinLeaveWebhook) return;
 
-  const embed = new EmbedBuilder()
+  const joinLeaveEmbed = new EmbedBuilder()
     .setTitle("Server Joined!")
     .setThumbnail(guild.iconURL())
     .setColor(client.config.EMBED_COLORS.SUCCESS)
@@ -34,9 +34,9 @@ module.exports = async (client, guild) => {
       },
       {
         name: "Owner",
-        value: `${client.users.cache.get(guild.ownerId).tag} [\`${
+        value: `${client.users.cache.get(guild.ownerId)} [\`${
           guild.ownerId
-        }\`]`,
+        }\`] [<@${guild.ownerId}>]`,
         inline: false,
       },
       {
@@ -50,6 +50,6 @@ module.exports = async (client, guild) => {
   client.joinLeaveWebhook.send({
     username: "Join",
     avatarURL: client.user.displayAvatarURL(),
-    embeds: [embed],
+    embeds: [joinLeaveEmbed],
   });
 };

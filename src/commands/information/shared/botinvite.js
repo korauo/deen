@@ -11,7 +11,8 @@ module.exports = (client) => {
     .setAuthor({ name: "Invite" })
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setThumbnail(client.user.displayAvatarURL())
-    .setDescription("Assalamu Alaikum! Jazakallah Khair for considering to invite me :)\nUse the buttons below to navigate where you want",
+    .setDescription(
+      "Assalamu Alaikum! Jazakallah Khair for considering to invite me :)\nUse the buttons below to navigate where you want",
     );
 
   // Buttons
